@@ -10,7 +10,7 @@ public class GameManager {
     private Dado dado;
     private boolean juegoTerminado;
     private Jugador ganador;
-    private int dineroObjetivo; // Dinero necesario para ganar
+    private int dineroObjetivo;
 
     public GameManager(int numeroJugadores, int dineroInicial, int dineroObjetivo) {
         this.tablero = new Tablero();
@@ -21,7 +21,6 @@ public class GameManager {
         this.ganador = null;
         this.dineroObjetivo = dineroObjetivo;
 
-        // Crear jugadores
         for (int i = 0; i < numeroJugadores; i++) {
             jugadores.add(new Jugador("Jugador " + (i + 1), dineroInicial));
         }
@@ -51,9 +50,6 @@ public class GameManager {
         return ganador;
     }
 
-    /**
-     * Ejecuta un turno completo para el jugador actual.
-     */
     public void ejecutarTurno() {
         if (juegoTerminado) return;
 
@@ -61,24 +57,20 @@ public class GameManager {
         System.out.println("\n=== Turno de " + jugador.getNombre() + " ===");
         System.out.println("Dinero: $" + jugador.getDinero() + " | Posición: " + jugador.getPosicion());
 
-        // Si está en cárcel
         if (jugador.isEnCarcel()) {
             manejarTurnoEnCarcel(jugador);
             pasarAlSiguienteJugador();
             return;
         }
 
-        // Si está en descanso
         if (jugador.isEnDescanso()) {
             manejarTurnoEnDescanso(jugador);
             pasarAlSiguienteJugador();
             return;
         }
 
-        // Turno normal: tirar dados
         tirarDados(jugador);
 
-        // Solo pasar al siguiente si NO sacó doble
         if (!dado.esDoble()) {
             pasarAlSiguienteJugador();
         } else {
@@ -86,21 +78,17 @@ public class GameManager {
         }
     }
 
-    /**
-     * Tira los dados y mueve al jugador.
-     */
     private void tirarDados(Jugador jugador) {
         int suma = dado.tirar();
         System.out.println(dado);
 
-        // Verificar si es el tercer doble consecutivo
         if (dado.esDoble()) {
             jugador.incrementarDoblesConsecutivos();
 
             if (jugador.getDoblesConsecutivos() >= 3) {
                 System.out.println("¡Tres dobles seguidos! " + jugador.getNombre() + " va a la cárcel!");
                 jugador.setEnCarcel(true);
-                jugador.setPosicion(10); // Cárcel
+                jugador.setPosicion(10);
                 jugador.resetearDoblesConsecutivos();
                 pasarAlSiguienteJugador();
                 return;
@@ -109,24 +97,18 @@ public class GameManager {
             jugador.resetearDoblesConsecutivos();
         }
 
-        // Mover al jugador
         jugador.mover(suma);
         System.out.println(jugador.getNombre() + " se mueve a la posición " + jugador.getPosicion());
 
-        // Ejecutar acción de la casilla
         Casilla casilla = tablero.getCasilla(jugador.getPosicion());
         if (casilla != null) {
             System.out.println("Cayó en: " + casilla.getNombre());
             casilla.ejecutarAccion(jugador, tablero);
         }
 
-        // Verificar condiciones de fin de juego
         verificarFinDeJuego();
     }
 
-    /**
-     * Maneja el turno cuando el jugador está en la cárcel.
-     */
     private void manejarTurnoEnCarcel(Jugador jugador) {
         System.out.println(jugador.getNombre() + " está en la cárcel (turno " + (jugador.getTurnosEnCarcel() + 1) + ")");
 
@@ -145,7 +127,6 @@ public class GameManager {
         } else {
             jugador.incrementarTurnosEnCarcel();
 
-            // Después de 3 turnos, puede pagar para salir o sale automáticamente
             if (jugador.getTurnosEnCarcel() >= 3) {
                 System.out.println(jugador.getNombre() + " sale de la cárcel automáticamente");
                 jugador.setEnCarcel(false);
@@ -155,9 +136,6 @@ public class GameManager {
         pasarAlSiguienteJugador();
     }
 
-    /**
-     * Maneja el turno cuando el jugador está en descanso.
-     */
     private void manejarTurnoEnDescanso(Jugador jugador) {
         System.out.println(jugador.getNombre() + " está descansando");
 
@@ -179,9 +157,6 @@ public class GameManager {
         pasarAlSiguienteJugador();
     }
 
-    /**
-     * Permite al jugador comprar la propiedad en la que está.
-     */
     public boolean comprarPropiedad() {
         Jugador jugador = getJugadorActual();
         Casilla casilla = tablero.getCasilla(jugador.getPosicion());
@@ -210,9 +185,6 @@ public class GameManager {
         return true;
     }
 
-    /**
-     * Permite al jugador vender una propiedad al banco.
-     */
     public boolean venderPropiedad(Propiedad propiedad) {
         Jugador jugador = getJugadorActual();
 
@@ -229,11 +201,7 @@ public class GameManager {
         return true;
     }
 
-    /**
-     * Verifica si el juego terminó.
-     */
     private void verificarFinDeJuego() {
-        // Verificar si alguien alcanzó el dinero objetivo
         for (Jugador jugador : jugadores) {
             if (jugador.getDinero() >= dineroObjetivo) {
                 juegoTerminado = true;
@@ -243,7 +211,6 @@ public class GameManager {
             }
         }
 
-        // Verificar si solo queda un jugador sin bancarrota
         List<Jugador> jugadoresActivos = new ArrayList<>();
         for (Jugador jugador : jugadores) {
             if (!jugador.enBancarrota()) {
@@ -258,18 +225,12 @@ public class GameManager {
         }
     }
 
-    /**
-     * Pasa al siguiente jugador.
-     */
     private void pasarAlSiguienteJugador() {
         do {
             jugadorActualIndex = (jugadorActualIndex + 1) % jugadores.size();
         } while (getJugadorActual().enBancarrota());
     }
 
-    /**
-     * Reinicia el juego.
-     */
     public void reiniciarJuego() {
         tablero = new Tablero();
         jugadorActualIndex = 0;
@@ -277,7 +238,7 @@ public class GameManager {
         ganador = null;
 
         for (Jugador jugador : jugadores) {
-            jugador.setDinero(5000); // Reiniciar con dinero inicial
+            jugador.setDinero(5000);
             jugador.setPosicion(0);
             jugador.getPropiedades().clear();
             jugador.setEnCarcel(false);

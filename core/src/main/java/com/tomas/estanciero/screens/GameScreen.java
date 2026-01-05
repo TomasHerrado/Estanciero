@@ -28,15 +28,12 @@ public class GameScreen implements Screen{
     private Stage stage;
     private Skin skin;
 
-    // Dimensiones del tablero
     private float ANCHO_TABLERO = 700;
     private float ALTO_TABLERO = 700;
     private Vector2 posicionTablero;
 
-    // Posiciones exactas de las casillas en la imagen
     private Vector2[] posicionesCasillas;
 
-    // Colores de jugadores
     private static final Color[] COLORES_JUGADORES = {
         new Color(0.9f, 0.2f, 0.2f, 1f), // Rojo
         new Color(0.2f, 0.4f, 0.9f, 1f), // Azul
@@ -44,7 +41,6 @@ public class GameScreen implements Screen{
         new Color(0.95f, 0.8f, 0.1f, 1f)  // Amarillo
     };
 
-    // UI Elements
     private Label labelTurno;
     private Label labelDinero;
     private Label labelPosicion;
@@ -82,7 +78,6 @@ public class GameScreen implements Screen{
 
         posicionTablero = new Vector2(40, 10);
 
-        // Inicializar posiciones de casillas
         inicializarPosicionesCasillas();
 
         gameManager = new GameManager(4, 5000, 20000);
@@ -103,20 +98,15 @@ public class GameScreen implements Screen{
         fontGrande.getData().setScale(1.8f);
     }
 
-    /**
-     * Inicializa las posiciones exactas de cada casilla basándose en la imagen del tablero.
-     */
     private void inicializarPosicionesCasillas() {
         posicionesCasillas = new Vector2[40];
 
         float baseX = posicionTablero.x;
         float baseY = posicionTablero.y;
 
-        // Tamaño aproximado de cada casilla
         float anchoCasilla = 70;
         float altoCasilla = 70;
 
-        // LADO INFERIOR (0-9): Izquierda a derecha
         for (int i = 0; i <= 9; i++) {
             posicionesCasillas[i] = new Vector2(
                 baseX + i * anchoCasilla,
@@ -124,7 +114,6 @@ public class GameScreen implements Screen{
             );
         }
 
-        // LADO DERECHO (10-19): Abajo a arriba
         for (int i = 10; i <= 19; i++) {
             posicionesCasillas[i] = new Vector2(
                 baseX + 9 * anchoCasilla,
@@ -132,7 +121,6 @@ public class GameScreen implements Screen{
             );
         }
 
-        // LADO SUPERIOR (20-29): Derecha a izquierda
         for (int i = 20; i <= 29; i++) {
             posicionesCasillas[i] = new Vector2(
                 baseX + (29 - i) * anchoCasilla,
@@ -140,7 +128,6 @@ public class GameScreen implements Screen{
             );
         }
 
-        // LADO IZQUIERDO (30-39): Arriba a abajo
         for (int i = 30; i <= 39; i++) {
             posicionesCasillas[i] = new Vector2(
                 baseX,
@@ -155,16 +142,13 @@ public class GameScreen implements Screen{
         panelDerecho.top().right();
         panelDerecho.pad(10);
 
-        // Título
         Label titulo = new Label("ESTANCIERO", skin, "window");
         titulo.setFontScale(1.8f);
         titulo.setColor(Color.GOLD);
         panelDerecho.add(titulo).colspan(2).padBottom(15).row();
 
-        // Separador
         panelDerecho.add(new Label("", skin)).height(2).colspan(2).fillX().padBottom(10).row();
 
-        // Panel de información del turno
         panelInfo = new Table();
         panelInfo.setBackground(skin.newDrawable("white", new Color(0, 0, 0, 0.7f)));
         panelInfo.pad(10);
@@ -183,7 +167,6 @@ public class GameScreen implements Screen{
         labelPosicion.setWrap(true);
         panelInfo.add(labelPosicion).width(250).colspan(2).padBottom(10).row();
 
-        // Dados
         labelDados = new Label("", skin);
         labelDados.setFontScale(1.5f);
         labelDados.setColor(Color.YELLOW);
@@ -191,7 +174,6 @@ public class GameScreen implements Screen{
 
         panelDerecho.add(panelInfo).width(280).padBottom(15).row();
 
-        // Botones de acción
         btnTirarDados = new TextButton("TIRAR DADOS", skin);
         btnTirarDados.getLabel().setFontScale(1.3f);
         btnTirarDados.addListener(new ClickListener() {
@@ -224,10 +206,8 @@ public class GameScreen implements Screen{
         });
         panelDerecho.add(btnTerminarTurno).width(280).height(60).padBottom(15).row();
 
-        // Separador
         panelDerecho.add(new Label("", skin)).height(2).colspan(2).fillX().padBottom(10).row();
 
-        // Panel de jugadores
         Label labelJugadores = new Label("JUGADORES", skin);
         labelJugadores.setFontScale(1.3f);
         labelJugadores.setColor(Color.CYAN);
@@ -255,12 +235,10 @@ public class GameScreen implements Screen{
             filaJugador.setBackground(skin.newDrawable("white", new Color(0, 0, 0, 0.5f)));
             filaJugador.pad(8);
 
-            // Indicador de color (más grande)
             Table colorIndicator = new Table();
             colorIndicator.setBackground(skin.newDrawable("white", COLORES_JUGADORES[i]));
             filaJugador.add(colorIndicator).size(30, 30).padRight(10);
 
-            // Información del jugador
             String info = jugador.getNombre();
             String estado = "$" + jugador.getDinero();
 
@@ -299,7 +277,6 @@ public class GameScreen implements Screen{
             return;
         }
 
-        // Guardar los dados antes de tirar
         Dado dado = gameManager.getDado();
         gameManager.ejecutarTurno();
         ultimosDados[0] = dado.getDado1();
@@ -308,7 +285,6 @@ public class GameScreen implements Screen{
         turnoEnCurso = true;
         actualizarUI();
 
-        // Verificar si cayó en una propiedad comprable
         verificarCasillaActual();
 
         if (gameManager.isJuegoTerminado()) {
@@ -449,7 +425,6 @@ public class GameScreen implements Screen{
             labelPosicion.setText(posInfo);
         }
 
-        // Mostrar dados
         if (ultimosDados[0] > 0) {
             String dadosTexto = "[" + ultimosDados[0] + "] [" + ultimosDados[1] + "] = " + (ultimosDados[0] + ultimosDados[1]);
             if (ultimosDados[0] == ultimosDados[1]) {
@@ -460,7 +435,6 @@ public class GameScreen implements Screen{
             labelDados.setText("");
         }
 
-        // Estado de botones
         btnTirarDados.setDisabled(turnoEnCurso || gameManager.isJuegoTerminado());
         btnTerminarTurno.setDisabled(!turnoEnCurso || gameManager.isJuegoTerminado());
 
@@ -478,7 +452,6 @@ public class GameScreen implements Screen{
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
-        // Dibujar tablero
         game.batch.begin();
         if (tableroTexture != null) {
             game.batch.draw(tableroTexture,
@@ -489,10 +462,8 @@ public class GameScreen implements Screen{
         }
         game.batch.end();
 
-        // Dibujar jugadores
         dibujarJugadores();
 
-        // Dibujar UI
         stage.act(delta);
         stage.draw();
     }
@@ -510,11 +481,9 @@ public class GameScreen implements Screen{
 
             Vector2 posCasilla = posicionesCasillas[pos];
 
-            // Offset para que no se superpongan
             float offsetX = (i % 2) * 30 + 35;
             float offsetY = (i / 2) * 30 + 35;
 
-            // Ficha del jugador
             shapeRenderer.setColor(COLORES_JUGADORES[i]);
             shapeRenderer.circle(
                 posCasilla.x + offsetX,
@@ -522,7 +491,6 @@ public class GameScreen implements Screen{
                 14
             );
 
-            // Borde negro
             shapeRenderer.end();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             Gdx.gl.glLineWidth(3);

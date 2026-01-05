@@ -11,14 +11,9 @@ public class Tablero {
         inicializarTablero();
     }
 
-    /**
-     * Inicializa el tablero con las 40 casillas basadas en la imagen del Estanciero.
-     */
     private void inicializarTablero() {
-        // Esquina inferior derecha - SALIDA
         casillas.add(new Casilla(0, "SALIDA", Casilla.TipoCasilla.SALIDA));
 
-        // Lado derecho (abajo hacia arriba)
         casillas.add(crearCasillaPropiedad(1, "FORMOSA", Propiedad.TipoPropiedad.PROVINCIA, 100, 10, "Norte"));
         casillas.add(new Casilla(2, "SUERTE", Casilla.TipoCasilla.SUERTE));
         casillas.add(crearCasillaPropiedad(3, "CÓRDOBA", Propiedad.TipoPropiedad.PROVINCIA, 120, 12, "Centro"));
@@ -29,10 +24,8 @@ public class Tablero {
         casillas.add(new Casilla(8, "DESTINO", Casilla.TipoCasilla.DESTINO));
         casillas.add(crearCasillaPropiedad(9, "CHACO", Propiedad.TipoPropiedad.PROVINCIA, 180, 18, "Norte"));
 
-        // Esquina superior derecha - CÁRCEL
         casillas.add(new Casilla(10, "CÁRCEL", Casilla.TipoCasilla.CARCEL));
 
-        // Lado superior (derecha a izquierda)
         casillas.add(crearCasillaPropiedad(11, "SAN LUIS", Propiedad.TipoPropiedad.PROVINCIA, 200, 20, "Centro"));
         casillas.add(crearCasillaPropiedad(12, "COMPAÑÍA", Propiedad.TipoPropiedad.COMPANIA, 150, 20, "Compañía"));
         casillas.add(crearCasillaPropiedad(13, "CORRIENTES", Propiedad.TipoPropiedad.PROVINCIA, 220, 22, "Norte"));
@@ -43,10 +36,8 @@ public class Tablero {
         casillas.add(crearCasillaPropiedad(18, "NEUQUÉN", Propiedad.TipoPropiedad.PROVINCIA, 280, 28, "Sur"));
         casillas.add(new Casilla(19, "DESTINO", Casilla.TipoCasilla.DESTINO));
 
-        // Esquina superior izquierda - DESCANSO
         casillas.add(new Casilla(20, "DESCANSO", Casilla.TipoCasilla.DESCANSO));
 
-        // Lado izquierdo (arriba hacia abajo)
         casillas.add(crearCasillaPropiedad(21, "MENDOZA", Propiedad.TipoPropiedad.PROVINCIA, 300, 30, "Centro"));
         casillas.add(new Casilla(22, "SUERTE", Casilla.TipoCasilla.SUERTE));
         casillas.add(crearCasillaPropiedad(23, "LA RIOJA", Propiedad.TipoPropiedad.PROVINCIA, 320, 32, "Centro"));
@@ -57,10 +48,8 @@ public class Tablero {
         casillas.add(new Casilla(28, "DESTINO", Casilla.TipoCasilla.DESTINO));
         casillas.add(crearCasillaPropiedad(29, "SANTA FE", Propiedad.TipoPropiedad.PROVINCIA, 380, 38, "Centro"));
 
-        // Esquina inferior izquierda - IR A LA CÁRCEL
         casillas.add(new Casilla(30, "IR A LA CÁRCEL", Casilla.TipoCasilla.IR_A_CARCEL));
 
-        // Lado inferior (izquierda a derecha)
         casillas.add(crearCasillaPropiedad(31, "CATAMARCA", Propiedad.TipoPropiedad.PROVINCIA, 400, 40, "Norte"));
         casillas.add(crearCasillaPropiedad(32, "COMPAÑÍA", Propiedad.TipoPropiedad.COMPANIA, 150, 20, "Compañía"));
         casillas.add(crearCasillaPropiedad(33, "ENTRE RÍOS", Propiedad.TipoPropiedad.PROVINCIA, 420, 42, "Centro"));
@@ -72,9 +61,6 @@ public class Tablero {
         casillas.add(crearCasillaPropiedad(39, "TIERRA DEL FUEGO", Propiedad.TipoPropiedad.PROVINCIA, 600, 60, "Sur"));
     }
 
-    /**
-     * Helper para crear casillas con propiedades.
-     */
     private Casilla crearCasillaPropiedad(int posicion, String nombre, Propiedad.TipoPropiedad tipo, int precio, int alquiler, String zona) {
         Propiedad propiedad = new Propiedad(nombre, tipo, precio, alquiler, zona);
         return new Casilla(posicion, propiedad);
@@ -95,9 +81,6 @@ public class Tablero {
         return TOTAL_CASILLAS;
     }
 
-    /**
-     * Obtiene todas las propiedades del tablero.
-     */
     public List<Propiedad> getPropiedades() {
         List<Propiedad> propiedades = new ArrayList<>();
         for (Casilla casilla : casillas) {
@@ -107,10 +90,6 @@ public class Tablero {
         }
         return propiedades;
     }
-
-    /**
-     * Obtiene propiedades disponibles para comprar.
-     */
     public List<Propiedad> getPropiedadesDisponibles() {
         List<Propiedad> disponibles = new ArrayList<>();
         for (Propiedad propiedad : getPropiedades()) {

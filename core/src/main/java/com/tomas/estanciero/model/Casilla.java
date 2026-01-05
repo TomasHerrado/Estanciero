@@ -12,11 +12,11 @@ public class Casilla {public enum TipoCasilla {
     IR_A_CARCEL
 }
 
-    private int posicion; // 0-39
+    private int posicion;
     private String nombre;
     private TipoCasilla tipo;
-    private Propiedad propiedad; // null si no es una casilla de propiedad
-    private int valor; // Para impuestos o premios
+    private Propiedad propiedad;
+    private int valor;
 
     public Casilla(int posicion, String nombre, TipoCasilla tipo) {
         this.posicion = posicion;
@@ -26,7 +26,6 @@ public class Casilla {public enum TipoCasilla {
         this.valor = 0;
     }
 
-    // Constructor para casillas con propiedad
     public Casilla(int posicion, Propiedad propiedad) {
         this.posicion = posicion;
         this.nombre = propiedad.getNombre();
@@ -35,7 +34,6 @@ public class Casilla {public enum TipoCasilla {
         this.valor = 0;
     }
 
-    // Constructor para impuestos/premios
     public Casilla(int posicion, String nombre, TipoCasilla tipo, int valor) {
         this.posicion = posicion;
         this.nombre = nombre;
@@ -44,7 +42,6 @@ public class Casilla {public enum TipoCasilla {
         this.valor = valor;
     }
 
-    // Getters
     public int getPosicion() {
         return posicion;
     }
@@ -65,22 +62,16 @@ public class Casilla {public enum TipoCasilla {
         return valor;
     }
 
-    /**
-     * Ejecuta la acción de la casilla cuando un jugador cae en ella.
-     */
     public void ejecutarAccion(Jugador jugador, Tablero tablero) {
         switch (tipo) {
             case SALIDA:
-                // Solo se cobra al pasar, no al caer
                 break;
 
             case PROPIEDAD:
                 if (propiedad != null) {
                     if (!propiedad.tieneDueno()) {
-                        // La propiedad está disponible para comprar
                         System.out.println(jugador.getNombre() + " puede comprar " + nombre);
                     } else if (propiedad.getDueno() != jugador) {
-                        // Debe pagar alquiler
                         int alquiler = propiedad.calcularAlquiler();
                         if (jugador.restarDinero(alquiler)) {
                             propiedad.getDueno().agregarDinero(alquiler);
@@ -104,12 +95,11 @@ public class Casilla {public enum TipoCasilla {
 
             case IR_A_CARCEL:
                 jugador.setEnCarcel(true);
-                jugador.setPosicion(10); // Posición de la cárcel
+                jugador.setPosicion(10);
                 System.out.println(jugador.getNombre() + " va a la cárcel!");
                 break;
 
             case CARCEL:
-                // Si solo está de visita, no pasa nada
                 if (!jugador.isEnCarcel()) {
                     System.out.println(jugador.getNombre() + " está de visita en la cárcel");
                 }
@@ -121,7 +111,6 @@ public class Casilla {public enum TipoCasilla {
 
             case SUERTE:
             case DESTINO:
-                // Se implementará con tarjetas
                 System.out.println(jugador.getNombre() + " saca una carta de " + tipo);
                 break;
         }
