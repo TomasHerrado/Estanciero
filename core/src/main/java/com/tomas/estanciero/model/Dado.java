@@ -12,12 +12,9 @@ public class Dado {
         this.dado2 = 1;
     }
 
-    /**
-     * Tira los dos dados y devuelve la suma.
-     */
     public int tirar() {
-        dado1 = random.nextInt(6) + 1; // 1-6
-        dado2 = random.nextInt(6) + 1; // 1-6
+        dado1 = random.nextInt(6) + 1;
+        dado2 = random.nextInt(6) + 1;
         return getSuma();
     }
 
@@ -33,9 +30,6 @@ public class Dado {
         return dado1 + dado2;
     }
 
-    /**
-     * Verifica si salió doble (ambos dados iguales).
-     */
     public boolean esDoble() {
         return dado1 == dado2;
     }

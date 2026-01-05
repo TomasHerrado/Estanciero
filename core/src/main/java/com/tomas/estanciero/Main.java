@@ -12,7 +12,6 @@ public class Main extends Game {
     public void create() {
         batch = new SpriteBatch();
 
-        // Iniciar con la pantalla de juego
         setScreen(new GameScreen(this));
     }
 

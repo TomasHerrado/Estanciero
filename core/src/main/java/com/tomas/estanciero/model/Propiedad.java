@@ -12,8 +12,8 @@ public class Propiedad {
     private int precio;
     private int alquilerBase;
     private Jugador dueno;
-    private int mejoras; // Cantidad de mejoras (campos, chacras, estancias)
-    private String zona; // Para agrupar provincias (Norte, Sur, etc.)
+    private int mejoras;
+    private String zona;
 
     public Propiedad(String nombre, TipoPropiedad tipo, int precio, int alquilerBase, String zona) {
         this.nombre = nombre;
@@ -25,7 +25,6 @@ public class Propiedad {
         this.mejoras = 0;
     }
 
-    // Getters y Setters
     public String getNombre() {
         return nombre;
     }
@@ -72,24 +71,16 @@ public class Propiedad {
         return zona;
     }
 
-    /**
-     * Calcula el alquiler según las mejoras.
-     */
     public int calcularAlquiler() {
         if (tipo == TipoPropiedad.FERROCARRIL || tipo == TipoPropiedad.COMPANIA) {
-            // Los ferrocarriles y compañías tienen lógica especial
             return alquilerBase;
         }
 
-        // Para provincias, el alquiler aumenta con mejoras
         return alquilerBase * (1 + mejoras);
     }
 
-    /**
-     * Calcula el precio de venta al banco.
-     */
     public int calcularPrecioVenta() {
-        return precio / 2; // Ejemplo: vende al 50% del precio
+        return precio / 2;
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.util.List;
 public class Jugador {
     private String nombre;
     private int dinero;
-    private int posicion; // Posición en el tablero (0-39)
+    private int posicion;
     private List<Propiedad> propiedades;
     private boolean enCarcel;
     private int turnosEnCarcel;
@@ -16,7 +16,7 @@ public class Jugador {
     public Jugador(String nombre, int dineroInicial) {
         this.nombre = nombre;
         this.dinero = dineroInicial;
-        this.posicion = 0; // Todos empiezan en SALIDA
+        this.posicion = 0;
         this.propiedades = new ArrayList<>();
         this.enCarcel = false;
         this.turnosEnCarcel = 0;
@@ -25,7 +25,6 @@ public class Jugador {
         this.doblesConsecutivos = 0;
     }
 
-    // Getters y Setters
     public String getNombre() {
         return nombre;
     }
@@ -55,16 +54,15 @@ public class Jugador {
     }
 
     public void setPosicion(int posicion) {
-        this.posicion = posicion % 40; // El tablero es circular (40 casillas)
+        this.posicion = posicion % 40;
     }
 
     public void mover(int casillas) {
         int posicionAnterior = this.posicion;
         this.posicion = (this.posicion + casillas) % 40;
 
-        // Si pasó por la salida (volvió a 0), cobra
         if (posicionAnterior > this.posicion) {
-            agregarDinero(200); // Monto al pasar por salida (ajustar según reglas)
+            agregarDinero(200);
         }
     }
 
